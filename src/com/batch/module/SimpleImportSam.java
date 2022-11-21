@@ -1,4 +1,4 @@
-package com.inzent.module;
+package com.batch.module;
 
 import java.io.IOException;
 import java.nio.file.Files;
