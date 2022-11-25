@@ -9,9 +9,9 @@
 	</appender>
 	
 	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOGS_ABSOLUTE_PATH}/SimpleExportSam.log</file>
+		<file>${LOGS_ABSOLUTE_PATH}/SimpleImportSam.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${LOGS_ABSOLUTE_PATH}/SimpleExportSam-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<fileNamePattern>${LOGS_ABSOLUTE_PATH}/SimpleImportSam-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 				<maxFileSize>10MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>

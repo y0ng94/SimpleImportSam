@@ -129,6 +129,17 @@ public class SimpleImportSam {
 			totalCount += count;
 
 			LogUtil.info(logger, "Completed {0} insertion data ( {1}s )", count, CommonUtil.getTimeElapsed(time));
+
+			// 잠시 쉬기
+			int sleep = Config.getIntConfig("SLEEP");
+			try {
+					LogUtil.info(logger, "Sleep for next selection. ( {0} )", sleep);
+					Thread.sleep(sleep * 1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				LogUtil.error(logger, "Error occurred sleep ( {0}s )", e.getMessage());
+				return;
+			}
 		}
 		
 		LogUtil.info(logger, "Completed all {0} processing", totalCount);
@@ -153,8 +164,21 @@ public class SimpleImportSam {
 			for (int i=0; i<paramList.size(); i++) {
 				String[] param = paramList.get(i);
 
-				for (int j=0; j<param.length; j++)
-					statement.setString(j+1, param[j]);
+				for (int j=0; j<param.length; j++) {
+					String data = param[j];
+
+					if (data != null) {
+						if (Config.getConfig("INPUT.LEFT") != null && !Config.getConfig("INPUT.LEFT").equals("") && data.startsWith(Config.getConfig("INPUT.LEFT")))
+							data = data.substring(Config.getConfig("INPUT.LEFT").length());
+						if (Config.getConfig("INPUT.RIGHT") != null && !Config.getConfig("INPUT.RIGHT").equals("") && data.startsWith(Config.getConfig("INPUT.RIGHT")))
+							data = data.substring(0, Config.getConfig("INPUT.RIGHT").length());
+						if (data.equals(Config.getConfig("INPUT.NULL")))
+							statement.setNull(j+1, java.sql.Types.NULL);
+						else
+							statement.setString(j+1, data);
+					} else
+						statement.setNull(j+1, java.sql.Types.NULL);
+				}
 
 				statement.addBatch();
 				statement.clearParameters();
